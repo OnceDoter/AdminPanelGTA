@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminPanelGTA", "AdminPanelGTA\AdminPanelGTA.csproj", "{877A276A-5540-4AD0-94E2-4E8E6B3DBBAB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{877A276A-5540-4AD0-94E2-4E8E6B3DBBAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{877A276A-5540-4AD0-94E2-4E8E6B3DBBAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{877A276A-5540-4AD0-94E2-4E8E6B3DBBAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{877A276A-5540-4AD0-94E2-4E8E6B3DBBAB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE9C04BD-F1A9-4DD5-9CE2-1DDAF90AE60A}
+	EndGlobalSection
+EndGlobal

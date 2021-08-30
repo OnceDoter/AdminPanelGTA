@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "Ts9Pv+XrzaqKOH4ijDCNJwH9AAGG+A/Mc8gNgpjif0/OvD07VPLoI71sPdasFF84+gGR6OB1gqv6FeNeer4Q7w==",
+  "success": true,
+  "projectFilePath": "X:\\Work\\AdminPanelGTA\\AdminPanelGTA\\AdminPanelGTA.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\CausalEwe\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\CausalEwe\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\CausalEwe\\.nuget\\packages\\swashbuckle.aspnetcore\\5.6.3\\swashbuckle.aspnetcore.5.6.3.nupkg.sha512",
+    "C:\\Users\\CausalEwe\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\5.6.3\\swashbuckle.aspnetcore.swagger.5.6.3.nupkg.sha512",
+    "C:\\Users\\CausalEwe\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
+    "C:\\Users\\CausalEwe\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512"
+  ],
+  "logs": []
+}

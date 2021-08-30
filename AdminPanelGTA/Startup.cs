@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdminPanelGTA.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdminPanelGTA
 {
@@ -26,6 +28,9 @@ namespace AdminPanelGTA
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			string connection = Configuration.GetConnectionString("DefaultConnection");
+			services.AddDbContext<RpgContext>(options =>
+				options.UseMySql(connection, new MySqlServerVersion(new Version(5, 7))));
 			services.AddControllers();
 		}
 

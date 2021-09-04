@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AdminPanelGTA.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace AdminPanelGTA.Services
 {
@@ -44,19 +40,17 @@ namespace AdminPanelGTA.Services
 				return player;
 		}
 
-		public static IQueryable<Player> Update(IQueryable<Player> query, PlayerRequest request)
+		public static Player Update(Player player, PlayerRequest request)
 		{
-			foreach (var player in query)
-			{
+
 				if (request.Name != null) player.Name = request.Name;
 				if (request.Title != null) player.Title = request.Title;
 				if (request.Race != null) player.Race = request.Race;
 				if (request.Profession != null) player.Profession = request.Profession;
 				if (request.Banned != null) player.Banned = request.Banned;
-				if (request.Experience != null) player.Experience = request.Experience;
+				if (request.Experience > 0) player.Experience = request.Experience;
 				if (request.BirthDay > 0) player.Birthday = DateTime.MinValue.AddYears(request.BirthDay - 1);
-			}
-			return query;
+				return player;
 		}
 	}
 }

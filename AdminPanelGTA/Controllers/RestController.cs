@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Json;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using AdminPanelGTA.Models;
 using AdminPanelGTA.Services;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AdminPanelGTA.Controllers
 {
 	[Route("rest")]
 	public class RestController : ControllerBase
 	{
+		private const string error404 = "Error 404";
+		private const string error400 = "Error 400";
 		private RpgContext _db;
 		public RestController(RpgContext context)
 		{
@@ -136,26 +130,23 @@ namespace AdminPanelGTA.Controllers
 		[Route("UpdatePlayer")]
 		public IActionResult UpdatePlayer([FromBody] PlayerRequest request)
 		{
-			var query = _db.Players.Where(p => p.ID == request.ID);
-			try
-			{
-				query = Filter.Update(query, request);
-			}
-			catch
-			{
-				return new JsonResult("Ошибка 400");
-			}
-			_db.SaveChanges();
 			Player player1 = new Player();
+			string playerError = error400;
 			try
 			{
 				player1 = _db.Players.Single(p => p.ID == request.ID);
+				if (player1 == null)
+				{
+					playerError = error404;
+					throw new Exception();
+				}
+				Filter.Update(player1, request);
+				_db.SaveChanges();
 			}
 			catch
 			{
-				return new JsonResult("Ошибка 404");
+				return new JsonResult(playerError);
 			}
-
 			return new JsonResult(player1);
 		} // Обновление ифнормации об игроке
 	}

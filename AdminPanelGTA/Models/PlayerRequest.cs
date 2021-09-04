@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AdminPanelGTA.Models
+﻿namespace AdminPanelGTA.Models
 {
 	public class PlayerRequest
 	{

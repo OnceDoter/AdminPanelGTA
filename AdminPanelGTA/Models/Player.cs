@@ -15,7 +15,7 @@ namespace AdminPanelGTA.Models
 		[MaxLength(20)]
 		public string Profession { get; set; }
 		public DateTime Birthday { get; set; }
-		public byte Banned { get; set; }
+		public bool Banned { get; set; }
 		[MaxLength(10)]
 		public int Experience { get; set; }
 		[MaxLength(3)]

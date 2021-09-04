@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using AdminPanelGTA.Models;
+using AdminPanelGTA.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -40,38 +41,42 @@ namespace AdminPanelGTA.Controllers
 		public IActionResult GetPlayers([FromBody]PlayerRequest request)
 		{
 			IQueryable<Player> players = _db.Players;
-			if (request.Name != null) players = players.Where(p => p.Name.Contains(request.Name));
-			if (request.Title != null) players = players.Where(p => p.Title.Contains(request.Title));
-			if (request.Race != null) players = players.Where(p => p.Race.Contains(request.Race));
-			if (request.Profession != null) players = players.Where(p => p.Profession.Contains(request.Profession));
-			if (request.MinExperience > 0) players = players.Where(p => p.Experience >= request.MinExperience);
-			if (request.MaxExperience > 0) players = players.Where(p => p.Experience <= request.MaxExperience);
-			if (request.MinLevel > 0) players = players.Where(p => p.Level >= request.MinLevel);
-			if (request.MaxLevel > 0) players = players.Where(p => p.Level <= request.MaxLevel);
-			if (request.Banned == true) players = players.Where(p => p.Banned == true);
-			else players = players.Where(p => p.Banned == false);
-			if (request.After > 0) players = players.Where(p => p.Birthday.Year >= request.After);
-			if (request.Before > 0) players = players.Where(p => p.Birthday.Year < request.Before);
+			players = Filter.FilterContext(request, players);
 			return new JsonResult(players);
 		}
 
 		[Route("getcount")]
-		public IActionResult GetCount([FromBody] PlayerRequest request)
+		public IActionResult GetCount([FromBody]PlayerRequest request)
 		{
 			IQueryable<Player> players = _db.Players;
-			if (request.Name != null) players = players.Where(p => p.Name.Contains(request.Name));
-			if (request.Title != null) players = players.Where(p => p.Title.Contains(request.Title));
-			if (request.Race != null) players = players.Where(p => p.Race.Contains(request.Race));
-			if (request.Profession != null) players = players.Where(p => p.Profession.Contains(request.Profession));
-			if (request.MinExperience > 0) players = players.Where(p => p.Experience >= request.MinExperience);
-			if (request.MaxExperience > 0) players = players.Where(p => p.Experience <= request.MaxExperience);
-			if (request.MinLevel > 0) players = players.Where(p => p.Level >= request.MinLevel);
-			if (request.MaxLevel > 0) players = players.Where(p => p.Level <= request.MaxLevel);
-			if (request.Banned == true) players = players.Where(p => p.Banned == true);
-			else players = players.Where(p => p.Banned == false);
-			if (request.After > 0) players = players.Where(p => p.Birthday.Year >= request.After);
-			if (request.Before > 0) players = players.Where(p => p.Birthday.Year < request.Before);
+			players = Filter.FilterContext(request, players);
 			return new JsonResult(players.Count());
+		}
+
+		[Route("CreatePlayer")]
+		public IActionResult CreatePlayer([FromBody]PlayerCreate request)
+		{
+			Player player = new Player();
+			try
+			{
+				if (string.IsNullOrEmpty(request.Name) ||
+				    request.Name.Length > 12 ||
+				    request.Title.Length > 30 ||
+				    request.Experience > 10000000 ||
+				    request.Experience < 0 ||
+				    request.BirthDay < 2000 ||
+				    request.BirthDay > 3000) throw new Exception();
+
+				player = Filter.Create(request, player);
+				_db.Players.Add(player);
+				_db.SaveChanges();
+			}
+			catch
+			{
+				return new JsonResult("Ошибка 404");
+			}
+
+			return new JsonResult(player);
 		}
 	}
 }

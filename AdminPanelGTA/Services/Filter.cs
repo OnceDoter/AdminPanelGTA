@@ -16,8 +16,7 @@ namespace AdminPanelGTA.Services
 			if (request.MaxExperience > 0) players = players.Where(p => p.Experience <= request.MaxExperience);
 			if (request.MinLevel > 0) players = players.Where(p => p.Level >= request.MinLevel);
 			if (request.MaxLevel > 0) players = players.Where(p => p.Level <= request.MaxLevel);
-			if (request.Banned) players = players.Where(p => p.Banned == true);
-			else players = players.Where(p => p.Banned == false);
+			players.Where(p => p.Banned == request.Banned);
 			if (request.After > 0) players = players.Where(p => p.Birthday.Year >= request.After);
 			if (request.Before > 0) players = players.Where(p => p.Birthday.Year < request.Before);
 			if (request.PageNumber > 0) players = players.Skip(request.PageNumber);

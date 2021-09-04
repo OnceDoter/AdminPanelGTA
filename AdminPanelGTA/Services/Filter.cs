@@ -4,9 +4,13 @@ using AdminPanelGTA.Models;
 
 namespace AdminPanelGTA.Services
 {
-	public static class Filter
+	internal class Filter
 	{
-		public static IQueryable<Player> GetPlayers(PlayerRequest request, IQueryable<Player> players)
+		internal Filter()
+		{
+		}
+		
+		public IQueryable<Player> GetPlayers(PlayerRequest request, IQueryable<Player> players)
 		{
 			if (request.Name != null) players = players.Where(p => p.Name.Contains(request.Name));
 			if (request.Title != null) players = players.Where(p => p.Title.Contains(request.Title));
@@ -26,7 +30,7 @@ namespace AdminPanelGTA.Services
 			return players;
 		}
 
-		public static Player Create(PlayerCreate request, Player player)
+		public Player Create(PlayerCreate request, Player player)
 		{
 				if (request.Banned) player.Banned = true;
 				else player.Banned = false;
@@ -42,7 +46,7 @@ namespace AdminPanelGTA.Services
 				return player;
 		}
 
-		public static Player Update(Player player, PlayerRequest request)
+		public Player Update(Player player, PlayerRequest request)
 		{
 
 				if (request.Name != null) player.Name = request.Name;

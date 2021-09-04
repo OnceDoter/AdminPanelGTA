@@ -43,7 +43,7 @@ namespace AdminPanelGTA.Controllers
 			IQueryable<Player> players = _db.Players;
 			players = Filter.FilterContext(request, players);
 			return new JsonResult(players);
-		}
+		} // Получить список игроков
 
 		[Route("getcount")]
 		public IActionResult GetCount([FromBody]PlayerRequest request)
@@ -51,7 +51,7 @@ namespace AdminPanelGTA.Controllers
 			IQueryable<Player> players = _db.Players;
 			players = Filter.FilterContext(request, players);
 			return new JsonResult(players.Count());
-		}
+		} // Получение количества игроков
 
 		[Route("CreatePlayer")]
 		public IActionResult CreatePlayer([FromBody]PlayerCreate request)
@@ -77,6 +77,86 @@ namespace AdminPanelGTA.Controllers
 			}
 
 			return new JsonResult(player);
-		}
+		} // Внесение нового игрока
+
+		[Route("getplayer")]
+		public IActionResult GetPlayer([FromBody]JsonElement data)
+		{
+			IQueryable<Player> players = _db.Players;
+			int a;
+			try
+			{
+				a = data.GetProperty("Id").GetInt32();
+			}
+			catch
+			{
+				return new JsonResult("Ошибка 400");
+			}
+			try
+			{
+				var idFromBd = players.OrderByDescending(e => e.ID).FirstOrDefault().ID;
+				if (idFromBd < a) throw new Exception();
+				players = players.Where(p => p.ID == a);
+				return new JsonResult(players);
+			}
+			catch 
+			{
+				return new JsonResult("Ошибка 404");
+			}
+		} // Получение игрока по айди
+
+		[Route("DeletePlayer")]
+		public IActionResult DeletePlayer([FromBody] JsonElement data)
+		{
+			IQueryable<Player> players = _db.Players;
+			int a;
+			try
+			{
+				a = data.GetProperty("Id").GetInt32();
+			}
+			catch
+			{
+				return new JsonResult("Ошибка 400");
+			}
+			try
+			{
+				var player = _db.Players.Single(p => p.ID == a);
+				var idFromBd = players.OrderByDescending(e => e.ID).FirstOrDefault().ID;
+				if (idFromBd < a) throw new Exception();
+				_db.Players.Remove(player);
+				_db.SaveChanges();
+				return new JsonResult("OK");
+			}
+			catch
+			{
+				return new JsonResult("Ошибка 404");
+			}
+		} // Удаление игрока по айди
+
+		[Route("UpdatePlayer")]
+		public IActionResult UpdatePlayer([FromBody] PlayerRequest request)
+		{
+			var query = _db.Players.Where(p => p.ID == request.ID);
+			try
+			{
+				query = Filter.Update(query, request);
+			}
+			catch
+			{
+				return new JsonResult("Ошибка 400");
+			}
+			_db.SaveChanges();
+			Player player1 = new Player();
+			try
+			{
+				player1 = _db.Players.Single(p => p.ID == request.ID);
+			}
+			catch
+			{
+				return new JsonResult("Ошибка 404");
+			}
+
+			return new JsonResult(player1);
+		} // Обновление ифнормации об игроке
 	}
 }

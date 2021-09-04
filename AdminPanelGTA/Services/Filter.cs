@@ -36,12 +36,27 @@ namespace AdminPanelGTA.Services
 				player.Title = request.Title;
 				player.Race = request.Race;
 				player.Profession = request.Profession;
-				player.Birthday = DateTime.Now.AddYears(-request.BirthDay);
+				player.Birthday = DateTime.MinValue.AddYears(request.BirthDay-1);
 				player.Experience = request.Experience;
 				level = (Math.Sqrt(2500 + (200 * player.Experience)) - 50) / 100;
 				player.Level = Convert.ToInt16(level);
 				player.UntilNextLevel = 50 * (player.Level + 1) * (player.Level + 2) - player.Experience;
 				return player;
+		}
+
+		public static IQueryable<Player> Update(IQueryable<Player> query, PlayerRequest request)
+		{
+			foreach (var player in query)
+			{
+				if (request.Name != null) player.Name = request.Name;
+				if (request.Title != null) player.Title = request.Title;
+				if (request.Race != null) player.Race = request.Race;
+				if (request.Profession != null) player.Profession = request.Profession;
+				if (request.Banned != null) player.Banned = request.Banned;
+				if (request.Experience != null) player.Experience = request.Experience;
+				if (request.BirthDay > 0) player.Birthday = DateTime.MinValue.AddYears(request.BirthDay - 1);
+			}
+			return query;
 		}
 	}
 }

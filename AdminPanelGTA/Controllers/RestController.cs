@@ -10,20 +10,13 @@ namespace AdminPanelGTA.Controllers
 	[Route("rest")]
 	public class RestController : ControllerBase
 	{
-		private const string error404 = "Error 404";
-		private const string error400 = "Error 400";
+		private const string Error404 = "Error 404";
+		private const string Error400 = "Error 400";
 		private RpgContext _db;
 		public RestController(RpgContext context)
 		{
 			_db = context;
 		}
-		[Route("Index")]
-		public string Index()
-		{
-			var db1 = _db.Players.ToList();
-			return "123";
-		}
-
 		[Route("players")]
 		public JsonResult CheckPlayers()
 		{
@@ -35,7 +28,7 @@ namespace AdminPanelGTA.Controllers
 		public IActionResult GetPlayers([FromBody]PlayerRequest request)
 		{
 			IQueryable<Player> players = _db.Players;
-			players = Filter.FilterContext(request, players);
+			players = Filter.GetPlayers(request, players);
 			return new JsonResult(players);
 		} // Получить список игроков
 
@@ -43,7 +36,7 @@ namespace AdminPanelGTA.Controllers
 		public IActionResult GetCount([FromBody]PlayerRequest request)
 		{
 			IQueryable<Player> players = _db.Players;
-			players = Filter.FilterContext(request, players);
+			players = Filter.GetPlayers(request, players);
 			return new JsonResult(players.Count());
 		} // Получение количества игроков
 
@@ -76,7 +69,7 @@ namespace AdminPanelGTA.Controllers
 		[Route("getplayer")]
 		public IActionResult GetPlayer([FromBody]JsonElement data)
 		{
-			IQueryable<Player> players = _db.Players;
+			
 			int a;
 			try
 			{
@@ -88,7 +81,8 @@ namespace AdminPanelGTA.Controllers
 			}
 			try
 			{
-				var idFromBd = players.OrderByDescending(e => e.ID).FirstOrDefault().ID;
+				IQueryable<Player> players = _db.Players;
+				var idFromBd = players.OrderByDescending(e => e.ID).FirstOrDefault()?.ID;
 				if (idFromBd < a) throw new Exception();
 				players = players.Where(p => p.ID == a);
 				return new JsonResult(players);
@@ -115,7 +109,7 @@ namespace AdminPanelGTA.Controllers
 			try
 			{
 				var player = _db.Players.Single(p => p.ID == a);
-				var idFromBd = players.OrderByDescending(e => e.ID).FirstOrDefault().ID;
+				var idFromBd = players.OrderByDescending(e => e.ID).FirstOrDefault()?.ID;
 				if (idFromBd < a) throw new Exception();
 				_db.Players.Remove(player);
 				_db.SaveChanges();
@@ -130,14 +124,14 @@ namespace AdminPanelGTA.Controllers
 		[Route("UpdatePlayer")]
 		public IActionResult UpdatePlayer([FromBody] PlayerRequest request)
 		{
-			Player player1 = new Player();
-			string playerError = error400;
+			Player player1;
+			string playerError = Error400;
 			try
 			{
 				player1 = _db.Players.Single(p => p.ID == request.ID);
 				if (player1 == null)
 				{
-					playerError = error404;
+					playerError = Error404;
 					throw new Exception();
 				}
 				Filter.Update(player1, request);

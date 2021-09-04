@@ -9,7 +9,6 @@ namespace AdminPanelGTA.Models
 		public RpgContext(DbContextOptions<RpgContext> options)
 			: base(options)
 			{
-				Database.EnsureCreated();
 			}
 	}
 }
